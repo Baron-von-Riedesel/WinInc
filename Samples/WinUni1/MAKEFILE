@@ -1,0 +1,49 @@
+
+# Win32 console "hello world" sample that supports UNICODE.
+# either JWASM and JWLINK (default)
+# or MASM and MS LINK
+# can be used and must be found in a directory included in PATH.
+
+# to create the binary with JWASM/JWLINK, just enter NMAKE
+# to create the binary with MASM/MS LINK, enter NMAKE MASM=1
+
+!ifndef MASM
+MASM=0
+MSLINK=0
+!else
+MSLINK=1
+!endif
+
+NAME=WinUni1
+OUTDIR=.
+
+# if the ANSI version is to be created, remove the -DUNICODE switch
+AOPT=-c -coff -nologo -DUNICODE -Fl$* -Fo$* -I..\..\Include $(AOPTD)
+!if $(MASM)
+ASM = ml.exe $(AOPT)
+!else
+ASM= jwasm.exe $(AOPT)
+!endif
+
+LIBS=kernel32.lib user32.lib
+
+!if $(MSLINK)
+LOPTS=/NOLOGO /MAP /LibPath:..\..\Lib /SUBSYSTEM:CONSOLE /FIXED:NO
+LINK=link.exe $*.obj $(LOPTS) $(LIBS)
+!else
+LOPTS=op MAP,quiet libpath ..\..\Lib 
+LINK=jwlink format windows pe file $*.obj $(LOPTS) lib {$(LIBS)} op noreloc
+!endif
+
+
+$(OUTDIR)\$(NAME).exe: $(OUTDIR)\$(NAME).obj makefile
+	@$(LINK)
+
+$(OUTDIR)\$(NAME).obj: $(NAME).asm makefile
+	@$(ASM) $(NAME).asm
+
+clean:
+	@erase *.exe
+	@erase *.obj
+	@erase *.lst
+	@erase *.map

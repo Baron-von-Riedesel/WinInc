@@ -1,0 +1,50 @@
+
+# creates DSOUND2.EXE
+
+name = DSOUND2
+
+DEBUG=0
+OUTDIR=.
+
+!ifndef MASM
+MASM=0
+MSLINK=0
+!else
+MSLINK=1
+!endif
+
+!if $(DEBUG)
+LOPTD=/DEBUG:FULL
+AOPTD=-Zi -DDEBUG
+!else
+LOPTD=/DEBUG:NONE
+AOPTD=
+!endif
+
+!if $(MASM)
+ASM = ml -c -coff -nologo -Fl -Sg -Fo$* -I ..\..\include
+!else
+ASM = jwasm -c -coff -nologo -Fl -Sg -Fo$* -I ..\..\include
+!endif
+
+LIBS= kernel32.lib user32.lib gdi32.lib dsound.lib
+
+!if $(MSLINK)
+LOPT=/OUT:$*.EXE /LIBPATH:..\..\lib /SUBSYSTEM:CONSOLE $(LOPTD) /NOLOGO /MAP
+LINK=link.exe $(OUTDIR)\$(name).obj $(LOPT) $(LIBS)
+!else
+LOPT=format windows pe LIBPATH ..\..\Lib op map, quiet
+LINK=@jwlink.exe $(LOPT) file $(OUTDIR)\$(name).obj lib {$(LIBS)}
+!endif
+
+$(name).exe: $*.obj
+	$(LINK)
+
+$(name).obj: $(name).asm
+	$(ASM) $(name).asm
+
+CLEAN :
+	-@erase "$(OUTDIR)\$(name).exe"
+	-@erase "$(OUTDIR)\$(name).obj"
+	-@erase "$(OUTDIR)\$(name).lst"
+	-@erase "$(OUTDIR)\$(name).map"

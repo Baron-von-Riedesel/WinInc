@@ -1,0 +1,33 @@
+
+# sample for WinSock2
+# JWasm and
+# JWlink or MS link are used
+
+NAME=SOCKHTTP
+
+OUTDIR=.
+
+MSLINK=0
+ASM=jwasm.exe -nologo -c -win64 -Zp8 -Fl$* -Fo$* -I..\..\Include
+
+LIBS=kernel32.lib user32.lib ws2_32.lib
+
+!if $(MSLINK)
+LOPTS= /MAP /SUBSYSTEM:CONSOLE $(LIBDEF) /LIBPATH:..\..\Lib64
+LINK=link.exe $*.obj $(LOPTS) $(LIBS)
+!else
+LOPTS=format windows pe libpath ..\..\Lib64
+LINK=jwlink.exe $(LOPTS) file $*.obj lib {$(LIBS)} op m, q
+!endif
+
+$(NAME).exe: $*.obj Makefile
+	$(LINK)
+
+$(NAME).obj: $(NAME).asm Makefile
+	$(ASM) $(NAME).asm
+
+CLEAN :
+	-@erase "$(OUTDIR)\$(NAME).exe"
+	-@erase "$(OUTDIR)\$(NAME).obj"
+	-@erase "$(OUTDIR)\$(NAME).lst"
+	-@erase "$(OUTDIR)\$(NAME).map"

@@ -1,0 +1,58 @@
+
+# either JWasm/JWlink or Masm/MS link are used
+
+NAME=SOCKHTTP
+
+OUTDIR=.
+
+!ifndef MASM
+MASM=0
+MSLINK=0
+!else
+MSLINK=1
+!endif
+
+!ifndef DEBUG
+DEBUG=0
+!endif
+
+!if $(DEBUG)
+AOPTD=-Zi
+!if $(MSLINK)
+LOPTD=/Debug
+!else
+LOPTD=debug c op cvp
+!endif
+!else
+AOPTD=
+!endif
+
+AOPT= -nologo -c -coff -Fl$* -Fo$* -I..\..\Include $(AOPTD)
+!if $(MASM)
+ASM=ml.exe $(AOPT)
+!else
+ASM=jwasm.exe $(AOPT)
+!endif
+
+LIBS=kernel32.lib user32.lib ws2_32.lib
+
+!if $(MSLINK)
+LOPTS= /MAP /SUBSYSTEM:CONSOLE $(LIBDEF) /LIBPATH:..\..\Lib
+LINK=link.exe $(LOPTD) $*.obj $(LOPTS) $(LIBS)
+!else
+LOPTS=format windows pe libpath ..\..\Lib
+LINK=jwlink.exe $(LOPTD) $(LOPTS) file $*.obj lib {$(LIBS)} op m, q
+!endif
+
+$(NAME).exe: $*.obj Makefile
+	$(LINK)
+
+$(NAME).obj: $(NAME).asm Makefile
+	$(ASM) $(NAME).asm
+
+CLEAN :
+	-@erase "$(OUTDIR)\$(NAME).exe"
+	-@erase "$(OUTDIR)\$(NAME).obj"
+	-@erase "$(OUTDIR)\$(NAME).lst"
+	-@erase "$(OUTDIR)\$(NAME).map"
+	

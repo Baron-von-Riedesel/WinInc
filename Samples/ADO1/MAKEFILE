@@ -1,0 +1,58 @@
+
+# makefile for NMAKE, uses either JWasm/JWlink (default) or MASM/MSLINK
+
+!ifndef DEBUG
+DEBUG = 0
+!endif
+
+!ifndef MASM
+MASM=0
+MSLINK=0
+!else
+MSLINK=1
+!endif
+
+OUTDIR=.
+
+NAME=ADO1
+
+!IF $(DEBUG)
+AOPTD=-Zi
+LOPTD=/debug
+!else
+AOPTD=
+LOPTD=
+!endif
+
+ASMOPT=-c -coff -nologo $(AOPTD) -Fl -Fo$* -I..\..\Include 
+!if $(MASM)
+ASM=ml.exe $(ASMOPT)
+!else
+ASM=jwasm.exe $(ASMOPT)
+!endif
+
+LIBS=kernel32.lib user32.lib gdi32.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib
+!if $(MSLINK)
+LOPTS=/nologo /subsystem:windows /out:$(OUTDIR)\$(NAME).exe $(LOPTD) /LIBPATH:..\..\Lib /OPT:NOWIN98 /MAP
+LINK=link.exe $(LOPTS) $(OUTDIR)\$(NAME).obj $(OUTDIR)\rsrc.res $(LIBS) 
+RC=rc.exe /fo"$*.res" /d "NDEBUG" -I..\..\Include 
+!else
+LINK=jwlink.exe format windows pe runtime windows file $(OUTDIR)\$(NAME).obj op map, quiet, res=$(OUTDIR)\rsrc.res libpath ..\..\Lib lib { $(LIBS) }
+RC=wrc.exe -q -r -i=..\..\Include
+!endif
+
+$(OUTDIR)\$(NAME).exe: $(OUTDIR)\$(NAME).obj $(OUTDIR)\rsrc.res
+	@$(LINK)
+
+$(OUTDIR)\$(NAME).obj: $(NAME).asm Makefile
+	@$(ASM) $(NAME).asm
+
+$(OUTDIR)\rsrc.res: rsrc.rc Makefile
+	@$(RC) rsrc.rc
+
+clean:
+	@erase $(OUTDIR)\*.exe
+	@erase $(OUTDIR)\*.obj
+	@erase $(OUTDIR)\*.lst
+	@erase $(OUTDIR)\*.map
+	@erase $(OUTDIR)\rsrc.res

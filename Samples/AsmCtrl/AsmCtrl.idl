@@ -1,0 +1,87 @@
+
+#include "olectl.h"
+
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+// define the interface outside of the library definition
+// so midl will create stubs
+[
+	object,
+	uuid(B0D96E72-04EB-11D6-B064-8494AF9D1B52),
+	dual,
+	oleautomation,
+	helpstring("IAsmCtrl interface"),
+	pointer_default(unique)
+]
+interface IAsmCtrl : IDispatch
+{
+	[propput, id(0), helpstring("put property Value")] 
+            HRESULT Value([in] long newVal);
+	[propget, id(0), helpstring("get property Value")] 
+            HRESULT Value([out, retval] long *pVal);
+
+	typedef enum RaiseEnum
+			{ NoRaise=0,
+			  SingleRaise=1,
+			  DoubleRaise=2
+			} RaiseEnum;
+	[id(1), helpstring("raises value of property Value")] 
+            HRESULT Raise([in] RaiseEnum Flags,[in, optional] VARIANT vtText, [in, optional] long iOptValue);
+
+	[propput, id(DISPID_FORECOLOR), helpstring("put property Fore Color")] 
+            HRESULT ForeColor([in] OLE_COLOR color);
+	[propget, id(DISPID_FORECOLOR), helpstring("get property Fore Color")] 
+			HRESULT ForeColor([out, retval] OLE_COLOR* color);
+
+	[propput, id(DISPID_BACKCOLOR), helpstring("put property Background Color")]
+            HRESULT BackColor([in] OLE_COLOR color);
+	[propget, id(DISPID_BACKCOLOR), helpstring("get property Background Color")] 
+			HRESULT BackColor([out, retval] OLE_COLOR* color);
+
+	[propput, id(2), helpstring("put ClientEdge border flag")]
+            HRESULT ClientEdge([in] short wFlag);
+	[propget, id(2), helpstring("get ClientEdge border flag")] 
+			HRESULT ClientEdge([out, retval] short* wFlag);
+
+	[id(DISPID_ABOUTBOX), helpstring("displays About message box")]
+		    HRESULT AboutBox();
+};
+
+
+[
+	uuid(B0D96E71-04EB-11D6-B064-8494AF9D1B52),
+	version(1.0),
+	helpstring("OCX Ctrl in pure ASM")
+]
+library AsmCtrl
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+
+	[
+		uuid(B0D96E73-04EB-11D6-B064-8494AF9D1B52),
+		helpstring("Event interface for AsmCtrl")
+	]
+	dispinterface _AsmCtrlEvent
+	{
+		properties:
+		methods:
+			[id(1)] void OnClick([in]long x, [in] long y);
+	};
+
+	
+	[
+		uuid(B0D96E70-04EB-11D6-B064-8494AF9D1B52),
+		version(1.0),
+//		control,
+		helpstring("AsmCtrl coclass")
+	]
+	coclass AsmCtrl
+	{
+		[default] interface IAsmCtrl;
+		[default, source] dispinterface _AsmCtrlEvent;
+	};
+};

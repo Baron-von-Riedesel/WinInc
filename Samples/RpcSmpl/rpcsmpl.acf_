@@ -1,0 +1,9 @@
+
+//file: rpcsmpl.acf
+//rpcsmpl.acf isn't needed if midl is started with param /app_config:
+//then the [implicit_handle ...]-line has to be placed just after
+//the interface header in the .IDL file.
+[implicit_handle (handle_t hello_IfHandle)]
+interface hello
+{
+}

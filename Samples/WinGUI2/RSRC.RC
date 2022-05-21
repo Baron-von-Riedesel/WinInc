@@ -1,0 +1,16 @@
+
+#include "resource.h"
+
+#define IDD_MAIN 100
+#define IDC_LIST1 1000
+
+IDD_MAIN DIALOGEX 0, 0, 256, 180
+STYLE DS_CENTER | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "WinInc Hello World"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_LIST1,"SysListView32",LVS_REPORT | LVS_SINGLESEL | 
+                    LVS_SHOWSELALWAYS | WS_TABSTOP,4,4,256-8,160-8
+    PUSHBUTTON      "&Ok",IDOK,128-20, 160,40,14
+END
+

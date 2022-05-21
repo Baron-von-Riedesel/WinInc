@@ -1,0 +1,38 @@
+
+# Win64 console "hello world" sample that supports UNICODE.
+# JWASM and JWLINK (default)
+# must be found in a directory included in PATH.
+
+# to create the binary with JWASM/JWLINK, just enter NMAKE
+
+MSLINK=0
+
+NAME=WinUni1
+OUTDIR=.
+
+# if the ANSI version is to be created, remove the -DUNICODE switch
+AOPT=-c -win64 -Zp8 -nologo -DUNICODE -Fl$* -Fo$* -I..\..\Include $(AOPTD)
+ASM= jwasm.exe $(AOPT)
+
+LIBS=kernel32.lib user32.lib
+
+!if $(MSLINK)
+LOPTS=/NOLOGO /MAP /LibPath:..\..\Lib64 /SUBSYSTEM:CONSOLE /FIXED:NO
+LINK=link.exe $*.obj $(LOPTS) $(LIBS)
+!else
+LOPTS=op MAP,quiet libpath ..\..\Lib64 
+LINK=jwlink format windows pe file $*.obj $(LOPTS) lib {$(LIBS)} op noreloc
+!endif
+
+
+$(OUTDIR)\$(NAME).exe: $(OUTDIR)\$(NAME).obj makefile
+	@$(LINK)
+
+$(OUTDIR)\$(NAME).obj: $(NAME).asm makefile
+	@$(ASM) $(NAME).asm
+
+clean:
+	@erase *.exe
+	@erase *.obj
+	@erase *.lst
+	@erase *.map

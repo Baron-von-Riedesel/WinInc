@@ -1,0 +1,25 @@
+
+# simple Win64 console "hello world" sample.
+# Tools are JWasm and JWlink.
+# They must be found in a directory included in PATH.
+
+NAME=WinCon1
+OUTDIR=.
+
+AOPT=-c -win64 -Zp8 -nologo -Fl$* -Sg -Fo$* -I..\..\Include $(AOPTD)
+ASM= jwasm.exe $(AOPT)
+
+LIBS=kernel32.lib user32.lib
+LINK=jwlink.exe f $*.obj op m=$*.map libpath ..\..\Lib64 lib {$(LIBS)}
+
+$(OUTDIR)\$(NAME).exe: $(OUTDIR)\$(NAME).obj makefile
+	@$(LINK)
+
+$(OUTDIR)\$(NAME).obj: $(NAME).asm makefile
+	@$(ASM) $(NAME).asm
+
+clean:
+	@erase *.exe
+	@erase *.obj
+	@erase *.lst
+	@erase *.map

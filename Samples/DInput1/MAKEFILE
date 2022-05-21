@@ -1,0 +1,63 @@
+
+# please note that this sample requires 2 libraries from
+# the DirectX SDK (see DDLIBS below).
+# either JWasm/JWlink (default) or MASM/MSLINK is used
+
+NAME = DINPUT1
+
+OUTDIR=.
+
+!ifndef DEBUG
+DEBUG=0
+!endif
+
+DDPATH=\dxsdk\lib
+
+!ifndef MASM
+MASM=0
+MSLINK=0
+!else
+MSLINK=1
+!endif
+
+!if $(DEBUG)
+!if $(MSLINK)
+LOPTD=/DEBUG
+!else
+LOPTD=debug c op cvp
+!endif
+AOPTD=-Zi -DDEBUG
+!else
+LOPTD=
+AOPTD=
+!endif
+
+ASMOPT=-c -coff -nologo -Sg -Fl$* -Fo$* -I..\..\Include $(AOPTD)
+!if $(MASM)
+ASM = ml.exe $(ASMOPT) 
+!else
+ASM = jwasm.exe $(ASMOPT)
+!endif
+
+DDLIBS=$(DDPATH)\dinput.lib $(DDPATH)\dxguid.lib 
+LIBS= kernel32.lib user32.lib gdi32.lib crtdll.lib ole32.lib $(DDLIBS)
+
+!if $(MSLINK)
+LOPT=/OUT:$*.exe /LIBPATH:..\..\Lib /SUBSYSTEM:CONSOLE $(LOPTD) /FIXED:NO /NOLOGO /MAP /OPT:NOWIN98
+LINK=polink.exe $(LOPTD) $*.obj $(LOPT) $(LIBS)
+!else
+LOPT=LIBPATH ..\..\Lib op MAP, q
+LINK=jwlink.exe $(LOPTD) format windows pe file $*.obj $(LOPT) lib { $(LIBS) }
+!endif
+
+$(OUTDIR)\$(NAME).exe: $*.obj
+	@$(LINK)
+
+$(OUTDIR)\$(NAME).obj: $(NAME).asm Makefile
+	@$(ASM) $(NAME).asm
+
+CLEAN :
+	-@erase "$(OUTDIR)\$(NAME).exe"
+	-@erase "$(OUTDIR)\$(NAME).obj"
+	-@erase "$(OUTDIR)\$(NAME).lst"
+	-@erase "$(OUTDIR)\$(NAME).map"

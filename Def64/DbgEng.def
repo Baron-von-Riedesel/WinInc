@@ -1,0 +1,4 @@
+LIBRARY DbgEng
+EXPORTS
+"DebugConnect"
+"DebugCreate"

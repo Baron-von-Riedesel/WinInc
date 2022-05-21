@@ -1,0 +1,65 @@
+
+# SEH sample
+# either JWASM and JWLINK (default)
+# or MASM and MS LINK
+# can be used and must be found in a directory included in PATH.
+
+# to create the binary with JWASM/JWLINK, just enter NMAKE
+# to create the binary with MASM/MS LINK, enter NMAKE MASM=1
+
+!ifndef MASM
+MASM=0
+!endif
+
+!ifndef MSLINK
+MSLINK=$(MASM)
+!endif
+
+NAME=SEHSmpl
+OUTDIR=.
+
+!ifndef DEBUG
+DEBUG=0
+!endif
+
+!if $(DEBUG)
+AOPTD=-Zi
+!if $(MSLINK)
+LOPTD=/debug
+!else
+LOPTD=debug c op cvp
+!endif
+!else
+AOPTD=
+LOPTD=
+!endif
+
+AOPT=-c -coff -nologo -Fl$* -Fo$* -I..\..\Include $(AOPTD)
+!if $(MASM)
+ASM = ml.exe $(AOPT)
+!else
+ASM= jwasm.exe $(AOPT)
+!endif
+
+LIBS=kernel32.lib user32.lib
+
+!if $(MSLINK)
+LOPTS=/NOLOGO /MAP /LibPath:..\..\Lib /SUBSYSTEM:CONSOLE /FIXED:NO /OPT:NOWIN98
+LINK=link.exe $(LOPTD) $*.obj $(LOPTS) $(LIBS)
+!else
+LOPTS=op MAP,quiet libpath ..\..\Lib 
+LINK=jwlink $(LOPTD) format windows pe file $*.obj $(LOPTS) lib {$(LIBS)}
+!endif
+
+
+$(OUTDIR)\$(NAME).exe: $(OUTDIR)\$(NAME).obj makefile
+	@$(LINK)
+
+$(OUTDIR)\$(NAME).obj: $(NAME).asm makefile
+	@$(ASM) $(NAME).asm
+
+clean:
+	@erase *.exe
+	@erase *.obj
+	@erase *.lst
+	@erase *.map

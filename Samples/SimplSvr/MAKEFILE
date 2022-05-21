@@ -1,0 +1,91 @@
+
+# Makefile for NMAKE. Creates SimplestServer.DLL, an Automation server.
+# Tools to create the binary:
+# - JWASM, WRC and JWLINK (default) or
+#   MASM, MS RC and MS LINK.
+#   These tools must be found somewhere in PATH.
+# - MIDL.EXE to translate SimplestServer.IDL to *.TLB
+#   This tool must be found somewhere in PATH.
+# - COMView.EXE to translate SimplestServer.TLB to *.INC and *c.INC
+#   Adjust path of COMView below!!!
+
+!ifndef MASM
+MASM=0
+MSLINK=0
+!else
+MSLINK=1
+!endif
+
+COMVIEW=\projects\COMView\Release\COMView.exe
+
+NAME=SimplestServer
+DEBUG=0
+OUTDIR=.
+
+!if $(DEBUG)
+LOPTD=/DEBUG:FULL
+AOPTD=-Zi
+!else
+LOPTD=
+AOPTD=
+!endif
+
+ASMOPT=-c -nologo -coff -Fl$* -Fo$* -I..\..\Include $(AOPTD)
+!if $(MASM)
+ASM = @ml $(ASMOPT)
+!else
+ASM = @jwasm $(ASMOPT)
+!endif
+
+LIBS=kernel32.lib advapi32.lib user32.lib comctl32.lib ole32.lib oleaut32.lib uuid.lib
+
+!if $(MSLINK)
+LOPT=/DLL /OUT:$*.dll $(LIBS) /DEF:$(NAME).def /LibPath:..\..\Lib /MAP:$*.map /SUBSYSTEM:WINDOWS $(LOPTD)
+LINK=@link.exe $*.obj $(OUTDIR)\CClassFactory.obj $(OUTDIR)\CUnknown.obj $(OUTDIR)\rsrc.res $(LOPT) 
+RC=@rc.exe /I..\..\Include 
+!else
+LINK=@jwlink.exe format windows pe dll file $*.obj,$(OUTDIR)\CClassFactory.obj,$(OUTDIR)\CUnknown.obj op map, quiet, res=$(OUTDIR)\rsrc.res LibPath ..\..\Lib lib {$(LIBS)} @JWLINK.RSP
+RC=@wrc.exe -q -i..\..\Include 
+!endif
+
+ALL: $(OUTDIR) $(OUTDIR)\$(NAME).dll
+
+$(OUTDIR):
+	@mkdir $(OUTDIR)
+
+$(OUTDIR)\$(NAME).dll: $*.obj $(OUTDIR)\CClassFactory.obj $(OUTDIR)\CUnknown.obj $(OUTDIR)\rsrc.res Makefile
+	$(LINK)
+
+$(OUTDIR)\$(NAME).obj: $(NAME).asm makefile SimplestServer.inc
+	$(ASM) $(NAME).asm
+
+$(OUTDIR)\CClassFactory.obj: CClassFactory.asm makefile
+	$(ASM) CClassFactory.asm
+
+$(OUTDIR)\CUnknown.obj: CUnknown.asm makefile SimplestServer.inc
+    $(ASM) CUnknown.asm
+
+$(OUTDIR)\$(NAME).res: $(NAME).rc $(NAME).tlb makefile
+	$(RC) $(NAME).rc
+
+SimplestServer.inc SimplestServerc.inc: $(NAME).tlb
+	$(COMVIEW) /B SimplestServer.tlb
+
+$(NAME).tlb: $(NAME).idl
+	@MIDL -nologo $(NAME).idl
+
+CLEAN :
+	-@erase "$(OUTDIR)\*.obj"
+	-@erase "$(OUTDIR)\*.lst"
+	-@erase "$(OUTDIR)\$(NAME).map"
+	-@erase "$(OUTDIR)\$(NAME).exp"
+	-@erase "$(OUTDIR)\$(NAME).lib"
+	-@erase "$(OUTDIR)\$(NAME).dll"
+	-@erase "$(OUTDIR)\rsrc.res"
+	-@erase $(NAME).inc
+	-@erase $(NAME)c.inc
+	-@erase dlldata.c
+	-@erase $(NAME)_i.c
+	-@erase $(NAME)_p.c
+	-@erase $(NAME).h
+	-@erase $(NAME).tlb

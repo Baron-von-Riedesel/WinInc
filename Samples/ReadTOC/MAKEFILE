@@ -1,0 +1,52 @@
+
+# create READTOC.EXE
+# tools used: JWasm/JWlink or Masm/MS link
+
+name = READTOC
+
+DEBUG=0
+OUTDIR=.
+
+!ifndef MASM
+MASM=0
+MSLINK=0
+!else
+MSLINK=1
+!endif
+
+!if $(DEBUG)
+LOPTD=/DEBUG:FULL
+AOPTD=-Zd -DDEBUG
+!else
+LOPTD=/DEBUG:NONE
+AOPTD=
+!endif
+
+!if $(MASM)
+ASM = ml -c -coff -nologo -Fl -Sg -Fo$* -I ..\..\include
+!else
+ASM = jwasm -c -nologo -Sg -Fl$* -Fo$* -D?FLAT=1 -D_ML -coff -I..\..\Include
+!endif
+
+LIBS=kernel32.lib user32.lib msvcrt.lib
+
+!if $(MSLINK)
+LOPT=/OUT:$(OUTDIR)\$(name).exe /MAP:$*.map /SUBSYSTEM:CONSOLE $(LOPTD) /LIBPATH:..\..\Lib
+LINK=link $(LOPT) $(OUTDIR)\$(name).obj $(LIBS)
+!else
+LOPT=format windows pe LIBPATH ..\..\Lib op map, quiet
+LINK=jwlink.exe $(LOPT) file $(OUTDIR)\$(name).obj lib {$(LIBS)}
+!endif
+
+$(name).exe: $(OUTDIR)\$(name).obj
+	@$(LINK)
+
+$(OUTDIR)/$(name).obj: $(name).asm
+	$(ASM) $(name).asm
+
+clean:
+	@erase *.exe
+	@erase *.obj
+	@erase *.lst
+	@erase *.map
+

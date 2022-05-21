@@ -1,0 +1,27 @@
+
+#include "rsrc.h"
+#include "resource.h"
+
+#define IDC_STATIC -1
+
+LANGUAGE 0, 0
+
+// Dialog
+
+IDD_DIALOG1 DIALOGEX 0, 0, 260, 210
+STYLE DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Read Http File"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        "Url",IDC_STATIC,7,7,243,40
+    EDITTEXT        IDC_EDIT1,13,22,227,14,ES_AUTOHSCROLL | NOT WS_BORDER,
+                    WS_EX_CLIENTEDGE
+    CONTROL         "",IDC_RICHEDIT1,"RICHEDIT",ES_MULTILINE | ES_READONLY | 
+                    WS_BORDER | WS_VSCROLL | WS_TABSTOP,7,55,243,128
+    PUSHBUTTON      "Read",IDOK,72,189,50,14
+    PUSHBUTTON      "Close",IDCANCEL,138,189,50,14
+END
+
+
+
+

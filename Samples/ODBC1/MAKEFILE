@@ -1,0 +1,42 @@
+
+# either JWASM/JWLINK (default) or MASM/MSLINK is used
+
+NAME=odbc1
+
+!ifndef MASM
+MASM=0
+MSLINK=0
+!else
+MSLINK=1
+!endif
+
+OUTDIR=.
+
+ASMOPT=-c -nologo -coff -Fl$* -Sg -I..\..\Include
+!if $(MASM)
+ASM=@ml.exe $(ASMOPT)
+!else
+ASM=@jwasm.exe $(ASMOPT) 
+!endif
+
+!if $(MSLINK)
+LIBS=kernel32.lib user32.lib odbc32.lib msvcrt.lib 
+LOPTS= /MAP /LIBPATH:..\..\Lib /SUBSYSTEM:CONSOLE /OPT:NOWIN98
+LINK=link $(LOPTS) $* $(MODS) $(LIBS)
+!else
+LIBS= LIBPATH ..\..\Lib Library kernel32.lib,user32.lib,odbc32.lib,msvcrt.lib 
+LOPTS= op map, quiet 
+LINK=@jwlink format windows nt file $(NAME).obj $(LOPTS) $(LIBS)
+!endif
+
+$(NAME).exe: $*.obj 
+	$(LINK)
+
+$(NAME).obj: $(NAME).asm Makefile
+	$(ASM) -Fo$*.obj $(NAME).asm
+
+CLEAN :
+	-@erase "$(OUTDIR)\$(NAME).obj"
+	-@erase "$(OUTDIR)\$(NAME).exe"
+	-@erase "$(OUTDIR)\$(NAME).lst"
+	-@erase "$(OUTDIR)\$(NAME).map"

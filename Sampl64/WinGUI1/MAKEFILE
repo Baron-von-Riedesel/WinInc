@@ -1,0 +1,42 @@
+
+# simple Win64 GUI application.
+# Makefile for NMAKE. Tools to be used:
+# JWasm, JWlink and Open Watcom WRC.
+# the tools must be found somewhere in PATH.
+
+NAME=WinGUI1
+DEBUG=0
+OUTDIR=.
+
+!if $(DEBUG)
+LOPTD=xdbg=2
+AOPTD=-Zi
+!else
+LOPTD=
+AOPTD=
+!endif
+
+ASMOPT= -c -nologo -Zp8 -Sg -Fl$* -Fo$* -I..\..\Include $(AOPTD)
+
+ASM = jwasm.exe -win64 $(ASMOPT)
+
+LIBS=kernel32.lib user32.lib
+LINK=jwlink.exe format window pe ru windows name $*.exe f $*.obj op res=rsrc.res libpath ..\..\lib64 lib { $(LIBS) } op m=$*.map, q
+RC=wrc.exe /q /r /i..\..\Include
+
+$(OUTDIR)\$(NAME).exe: $(OUTDIR)\$(NAME).obj $(OUTDIR)\rsrc.res Makefile
+	@$(LINK)
+
+$(OUTDIR)\$(NAME).obj: $(NAME).asm makefile
+	@$(ASM) $(NAME).asm
+
+$(OUTDIR)\rsrc.res: rsrc.rc makefile
+	@$(RC) rsrc.rc
+
+CLEAN :
+	-@erase "$(OUTDIR)\$(NAME).exe"
+	-@erase "$(OUTDIR)\$(NAME).obj"
+	-@erase "$(OUTDIR)\$(NAME).map"
+	-@erase "$(OUTDIR)\$(NAME).lst"
+	-@erase "$(OUTDIR)\rsrc.res"
+

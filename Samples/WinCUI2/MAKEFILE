@@ -1,0 +1,80 @@
+
+# Makefile for NMAKE. Tools to be used:
+# either JWASM and JWLINK (default)
+# or      MASM and MS LINK
+# the tools must be found somewhere in PATH.
+
+# to create the binary using JWASM/JWLINK, just enter NMAKE
+# to create the binary using MASM/MS LINK, enter NMAKE MASM=1
+
+# USEDLL=1 use either MSVCRT.DLL or CRTDLL.DLL
+# USEDLL=0 if static CRT is to be used
+
+USEDLL=1
+
+# MASM=1 use MASM, MASM=0 use JWASM
+
+!ifndef MASM
+MASM=0
+MSLINK=0
+!else
+MSLINK=1
+!endif
+
+NAME=WinCUI2
+OUTDIR=.
+
+!ifndef DEBUG
+DEBUG=0
+!endif
+
+!if $(DEBUG)
+AOPTD=-Zi
+!if $(MSLINK)
+LOPTD=/DEBUG:FULL
+!else
+LOPTD=debug c op cvp
+!endif
+!else
+LOPTD=
+AOPTD=
+!endif
+
+!if $(USEDLL)
+#CLIB=msvcrt.lib
+CLIB=crtdll.lib
+AOPTC=-D_DLL
+!else
+CLIB=libc.lib
+AOPTC=
+!endif
+
+ASMOPT= -c -nologo -coff -Sg -Fl$* -Fo$* -I..\..\Include $(AOPTD) $(AOPTC)
+!if $(MASM)
+ASM = ml.exe $(ASMOPT)
+!else
+ASM = jwasm.exe $(ASMOPT)
+!endif
+
+LIBS=kernel32.lib $(CLIB)
+
+!if $(MSLINK)
+LOPT=/LibPath:..\..\Lib /MAP:$*.map /SUBSYSTEM:CONSOLE
+LINK=link.exe $(LOPTD) $(LOPT) /OUT:$*.exe $*.obj $(LIBS) 
+!else
+LOPT= LibPath ..\..\Lib op MAP, quiet
+LINK=jwlink.exe $(LOPTD) format windows pe file $(OUTDIR)\$(NAME).obj $(LOPT) lib {$(LIBS)}
+!endif
+
+$(OUTDIR)\$(NAME).exe: $(OUTDIR)\$(NAME).obj makefile
+	@$(LINK)
+
+$(OUTDIR)\$(NAME).obj: $(NAME).asm makefile
+	@$(ASM) $(NAME).asm
+
+CLEAN :
+	-@erase "$(OUTDIR)\$(NAME).exe"
+	-@erase "$(OUTDIR)\$(NAME).obj"
+	-@erase "$(OUTDIR)\$(NAME).map"
+	-@erase "$(OUTDIR)\$(NAME).lst"
+

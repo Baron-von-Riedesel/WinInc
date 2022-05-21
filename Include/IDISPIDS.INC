@@ -1,0 +1,15 @@
+;--- include file created by h2incx v0.99.12, copyright 2005 japheth
+;--- source file: c:\programme\devstudio\vc6\include\IDISPIDS.H, last modified: 4/24/1998 0:0
+
+DISPID_READYSTATE	EQU	- 525
+DISPID_READYSTATECHANGE	EQU	- 609
+DISPID_AMBIENT_TRANSFERPRIORITY	EQU	- 728
+DISPID_AMBIENT_OFFLINEIFNOTCONNECTED	EQU	- 5501
+DISPID_AMBIENT_SILENT	EQU	- 5502
+ifndef DISPID_AMBIENT_CODEPAGE
+DISPID_AMBIENT_CODEPAGE	EQU	- 725
+DISPID_AMBIENT_CHARSET	EQU	- 727
+endif 
+
+;--- errors: 0
+;--- end of file ---

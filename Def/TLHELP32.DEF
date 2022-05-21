@@ -1,0 +1,18 @@
+LIBRARY KERNEL32
+EXPORTS
+ "_CreateToolhelp32Snapshot@8"
+ "_Heap32First@12"
+ "_Heap32ListFirst@8"
+ "_Heap32ListNext@8"
+ "_Heap32Next@4"
+ "_Module32First@8"
+ "_Module32FirstW@8"
+ "_Module32Next@8"
+ "_Module32NextW@8"
+ "_Process32First@8"
+ "_Process32FirstW@8"
+ "_Process32Next@8"
+ "_Process32NextW@8"
+ "_Thread32First@8"
+ "_Thread32Next@8"
+ "_Toolhelp32ReadProcessMemory@20"

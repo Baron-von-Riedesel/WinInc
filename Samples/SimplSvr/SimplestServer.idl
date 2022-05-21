@@ -1,0 +1,49 @@
+
+#include "olectl.h"
+
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+// define the interface outside of the library definition
+// so midl will create stubs
+[
+	object,
+	uuid(B2D96E72-04EB-11D6-B064-8494AF9D1B52),
+	oleautomation,
+	helpstring("ISimplestServer interface"),
+	pointer_default(unique)
+]
+interface ISimplestServer : IUnknown
+{
+
+	[propget, id(1), helpstring("get property1 value")] 
+			HRESULT Property1([out, retval] long* lValue);
+	[propput, id(1), helpstring("put property1 value")]
+            HRESULT Property1([in] long lValue);
+
+};
+
+
+[
+	uuid(B2D96E71-04EB-11D6-B064-8494AF9D1B52),
+	version(1.0),
+	helpstring("Simplest COM Server in ASM")
+]
+library SimplestServer
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+
+	
+	[
+		uuid(B2D96E70-04EB-11D6-B064-8494AF9D1B52),
+		version(1.0),
+		helpstring("SimplestServer coclass")
+	]
+	coclass SimplestServer
+	{
+		[default] interface ISimplestServer;
+	};
+};

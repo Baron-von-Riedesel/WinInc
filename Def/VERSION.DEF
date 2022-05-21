@@ -1,0 +1,14 @@
+LIBRARY Version
+EXPORTS
+"_GetFileVersionInfoA@16"
+"_GetFileVersionInfoSizeA@8"
+"_GetFileVersionInfoSizeW@8"
+"_GetFileVersionInfoW@16"
+"_VerFindFileA@32"
+"_VerFindFileW@32"
+"_VerInstallFileA@32"
+"_VerInstallFileW@32"
+"_VerQueryValueA@16"
+"_VerQueryValueIndexA@24"
+"_VerQueryValueIndexW@24"
+"_VerQueryValueW@16"

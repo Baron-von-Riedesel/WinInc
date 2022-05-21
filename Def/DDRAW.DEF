@@ -1,0 +1,9 @@
+LIBRARY DDRAW
+EXPORTS
+"_DirectDrawCreate@12"
+"_DirectDrawCreateClipper@12"
+"_DirectDrawCreateEx@16"
+"_DirectDrawEnumerateA@8"
+"_DirectDrawEnumerateExA@12"
+"_DirectDrawEnumerateExW@12"
+"_DirectDrawEnumerateW@8"

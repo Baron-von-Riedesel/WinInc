@@ -1,0 +1,63 @@
+
+# Makefile for NMAKE. Tools to be used:
+# either JWASM, WRC and JWLINK (default)
+# or MASM, MS RC and MS LINK
+# the tools must be found somewhere in PATH.
+
+# to create the binary using JWASM/JWLINK, just enter NMAKE
+# to create the binary using MASM/MS LINK, enter NMAKE MASM=1
+
+!ifndef MASM
+MASM=0
+MSLINK=0
+!else
+MSLINK=1
+!endif
+
+NAME=LVSample
+DEBUG=0
+OUTDIR=.
+
+!if $(DEBUG)
+LOPTD=/DEBUG:FULL
+AOPTD=-Zi
+!else
+LOPTD=
+AOPTD=
+!endif
+
+ASMOPT=-c -nologo -coff -Sg -Fl$* -Fo$* -I..\..\Include $(AOPTD)
+!if $(MASM)
+ASM = ml.exe $(ASMOPT)
+!else
+ASM = jwasm.exe $(ASMOPT)
+!endif
+
+LIBS=kernel32.lib user32.lib comctl32.lib
+
+!if $(MSLINK)
+LOPT=/LibPath:..\..\Lib /MAP:$*.map /SUBSYSTEM:WINDOWS $(LOPTD)
+LINK=link.exe $*.obj $(LOPT) /OUT:$*.exe $(LIBS)
+#RC=rc.exe /i..\..\Include
+!else
+LOPT= LibPath ..\..\Lib op MAP, quiet
+LINK=jwlink.exe format windows pe runtime windows file $(OUTDIR)\$(NAME).obj $(LOPT) lib {$(LIBS)} op noreloc
+#RC=wrc.exe -q -r /I..\..\Include
+!endif
+
+$(OUTDIR)\$(NAME).exe: $(OUTDIR)\$(NAME).obj Makefile
+	@$(LINK)
+
+$(OUTDIR)\$(NAME).obj: $(NAME).asm makefile
+	@$(ASM) $(NAME).asm
+
+#$(OUTDIR)\RSRC.res: RSRC.rc makefile
+#	@$(RC) RSRC.rc
+
+CLEAN :
+	-@erase "$(OUTDIR)\$(NAME).exe"
+	-@erase "$(OUTDIR)\$(NAME).obj"
+	-@erase "$(OUTDIR)\$(NAME).map"
+	-@erase "$(OUTDIR)\$(NAME).lst"
+#	-@erase "$(OUTDIR)\rsrc.res"
+

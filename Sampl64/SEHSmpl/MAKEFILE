@@ -1,0 +1,75 @@
+
+# SEH samples
+# SEHSmpl : JWASM must be used to assemble it
+# SEHSmplm: can be assembled by both JWASM and MASM.
+# linker: JWLINK or MS LINK
+
+# to create the binaries with JWASM and JWLINK, just enter NMAKE
+# to assemble SEHSmplm with MASM, enter NMAKE MASM=1
+# to link the binaries with MS LINK, enter NMAKE MSLINK=1
+
+!ifndef MASM
+MASM=0
+!endif
+
+!ifndef MSLINK
+MSLINK=0
+!endif
+
+NAME=SEHSmpl
+NAME2=SEHSmplm
+OUTDIR=.
+
+!ifndef DEBUG
+DEBUG=0
+!endif
+
+!if $(DEBUG)
+AOPTD=-Zi
+!if $(MSLINK)
+LOPTD=/debug
+!else
+LOPTD=debug c op cvp
+!endif
+!else
+AOPTD=
+LOPTD=
+!endif
+
+AOPT=-c -nologo -Zp8 -Sg -Fl$* -Fo$* -I..\..\Include $(AOPTD)
+ASM= jwasm.exe -win64 $(AOPT)
+!if $(MASM)
+ASM2= ml64.exe -c $(AOPT)
+!else
+ASM2= $(ASM)
+!endif
+
+LIBS=kernel32.lib user32.lib
+
+!if $(MSLINK)
+LOPTS=/NOLOGO /MAP /LibPath:..\..\Lib64 /SUBSYSTEM:CONSOLE /FIXED:NO
+LINK=link.exe $(LOPTD) $*.obj $(LOPTS) $(LIBS)
+!else
+LOPTS=op MAP,quiet libpath ..\..\Lib64
+LINK=jwlink $(LOPTD) format windows pe file $*.obj $(LOPTS) lib {$(LIBS)} op start=mainCRTStartup
+!endif
+
+ALL: $(OUTDIR)\$(NAME).exe $(OUTDIR)\$(NAME2).exe
+
+$(OUTDIR)\$(NAME).exe: $(OUTDIR)\$(NAME).obj makefile
+	@$(LINK)
+
+$(OUTDIR)\$(NAME).obj: $(NAME).asm makefile
+	@$(ASM) $(NAME).asm
+
+$(OUTDIR)\$(NAME2).exe: $(OUTDIR)\$(NAME2).obj makefile
+	@$(LINK)
+
+$(OUTDIR)\$(NAME2).obj: $(NAME2).asm makefile
+	@$(ASM2) $(NAME2).asm
+
+clean:
+	@erase *.exe
+	@erase *.obj
+	@erase *.lst
+	@erase *.map

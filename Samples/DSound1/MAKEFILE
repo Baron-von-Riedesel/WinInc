@@ -1,0 +1,52 @@
+
+# DirectSound sample
+# either JWASM/JWLINK (default) or MASM/MSLINK is used.
+
+NAME = DSOUND1
+
+DEBUG=0
+OUTDIR=.
+
+!ifndef MASM
+MASM=0
+MSLINK=0
+!else
+MSLINK=1
+!endif
+
+!if $(DEBUG)
+LOPTD=/DEBUG:FULL
+AOPTD=-Zd -DDEBUG
+!else
+LOPTD=/DEBUG:NONE
+AOPTD=
+!endif
+
+ASMOPT=-c -coff -nologo -Fl$* -Fo$* -I..\..\Include
+!if $(MASM)
+ASM = @ml.exe $(ASMOPT)
+!else
+ASM = @jwasm.exe $(ASMOPT)
+!endif
+
+LIBS= kernel32.lib user32.lib gdi32.lib dsound.lib 
+
+!if $(MSLINK)
+LOPT=/OUT:$*.EXE /LIBPATH:..\..\Lib /SUBSYSTEM:CONSOLE $(LOPTD) /FIXED:NO /NOLOGO /MAP
+LINK=@link.exe $*.obj $(LOPT) $(LIBS) 
+!else
+LOPT=format windows pe LIBPATH ..\..\Lib op map, quiet
+LINK=@jwlink.exe $(LOPT) file $(OUTDIR)\$(NAME).obj lib {$(LIBS)}
+!endif
+
+$(OUTDIR)\$(NAME).exe: $*.obj
+	$(LINK) 
+
+$(OUTDIR)\$(NAME).obj: $(NAME).asm Makefile
+	$(ASM) $(NAME).asm
+
+CLEAN :
+	-@erase "$(OUTDIR)\$(NAME).exe"
+	-@erase "$(OUTDIR)\$(NAME).obj"
+	-@erase "$(OUTDIR)\$(NAME).lst"
+	-@erase "$(OUTDIR)\$(NAME).map"

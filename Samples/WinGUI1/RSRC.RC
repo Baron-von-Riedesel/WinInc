@@ -1,0 +1,11 @@
+
+#define IDR_MENU1 101
+#define IDM_EXIT  1001
+
+IDR_MENU1 MENU DISCARDABLE
+BEGIN
+    POPUP "&File"
+    BEGIN
+      MENUITEM "E&xit",  IDM_EXIT
+    END
+END

@@ -1,0 +1,14 @@
+
+
+[
+uuid(7a98c250-6808-11cf-b73b-00aa00b677a7),
+version(1.0)
+]
+//remove the next line when separate ACF file is wanted.
+[implicit_handle (handle_t hello_IfHandle)]
+
+interface hello
+{
+    void HelloProc([in, string] unsigned char * pszString);
+    void Shutdown(void);
+}

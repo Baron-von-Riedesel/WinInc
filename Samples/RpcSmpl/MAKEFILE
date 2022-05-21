@@ -1,0 +1,93 @@
+
+# please note that this sample requires a few additional tools
+# - Windows SDK ( Midl compiler & Windows C header files )
+# - MS VC ( C compiler )
+# - h2incx ( translates .H-file generate by Midl to assembly include file )
+
+NAME = rpcsmpl
+
+# adjust paths for MSVC and SDK!
+VCDIR=\msvc71
+SDKDIR=\mssdk 200302
+
+!ifndef DEBUG
+DEBUG=0
+!endif
+
+!ifndef MASM
+MASM=0
+!endif
+
+!ifndef MSLINK
+MSLINK=0
+!endif
+
+OUTDIR=.
+
+!if $(DEBUG)
+AOPTD=-Zi
+!if $(MSLINK)
+LOPTD=/DEBUG
+!else
+LOPTD=debug c op cvp
+!endif
+!else
+AOPTD=
+LOPTD=
+!endif
+
+ASMOPT=-c -coff $(AOPTD) -nologo -Sg -Fl$* -Fo$* -I..\..\Include
+!if $(MASM)
+ASM = ml.exe $(ASMOPT) 
+!else
+ASM = jwasm.exe $(ASMOPT)
+!endif
+
+!if $(MSLINK)
+LOPT=/OUT:$*.exe /LIBPATH:..\..\Lib /SUBSYSTEM:CONSOLE $(LOPTD) /FIXED:NO /NOLOGO /MAP /OPT:NOWIN98
+LFILESC=$(OUTDIR)\$(NAME)c.obj $(OUTDIR)\$(NAME)_c.obj
+LFILESS=$(OUTDIR)\$(NAME)s.obj $(OUTDIR)\$(NAME)_s.obj
+LINK=link.exe $(LOPT)
+!else
+LOPT=$(LOPTD) format win pe libpath ..\..\Lib op MAP, q
+LFILESC=f $(OUTDIR)\$(NAME)c.obj, $(OUTDIR)\$(NAME)_c.obj
+LFILESS=f $(OUTDIR)\$(NAME)s.obj, $(OUTDIR)\$(NAME)_s.obj
+LINK=jwlink.exe $(LOPT)
+!endif
+
+ALL: $(OUTDIR)\$(NAME)c.exe $(OUTDIR)\$(NAME)s.exe
+
+$(OUTDIR)\$(NAME)c.exe: $*.obj $(NAME)_c.obj
+	@$(LINK) $(LFILESC)
+
+$(OUTDIR)\$(NAME)s.exe: $*.obj $(NAME)_s.obj
+	@$(LINK) $(LFILESS)
+
+$(OUTDIR)\$(NAME)c.obj: $(NAME)c.asm $(NAME).inc Makefile
+	$(ASM) $(NAME)c.asm
+
+$(OUTDIR)\$(NAME)s.obj: $(NAME)s.asm $(NAME).inc Makefile
+	$(ASM) $(NAME)s.asm
+
+$(OUTDIR)\$(NAME)_c.obj: $(NAME)_c.c
+	$(VCDIR)\bin\cl.exe -c -I$(VCDIR)\include -MD -D_WIN32_WINNT=0x500 -I"$(SDKDIR)\Include" $(NAME)_c.c
+
+$(OUTDIR)\$(NAME)_s.obj: $(NAME)_s.c
+	$(VCDIR)\bin\cl.exe -c -I$(VCDIR)\include -MD -D_WIN32_WINNT=0x500 -I"$(SDKDIR)\Include" $(NAME)_s.c
+
+$(NAME).inc: $(NAME).h
+	@h2incx.exe -y -k c $(NAME).h
+
+$(NAME)_c.c $(NAME)_s.c $(NAME).h: $(NAME).idl
+	set path=$(VCDIR)\bin;%path%%
+	@"$(SDKDIR)\bin\midl.exe" /app_config /win32 rpcsmpl.idl
+
+CLEAN :
+	-@erase "$(OUTDIR)\*.exe"
+	-@erase "$(OUTDIR)\*.obj"
+	-@erase "$(OUTDIR)\*.lst"
+	-@erase "$(OUTDIR)\*.map"
+	-@erase "$(OUTDIR)\$(NAME)_c.c"
+	-@erase "$(OUTDIR)\$(NAME)_s.c"
+	-@erase "$(OUTDIR)\$(NAME).h"
+	-@erase "$(OUTDIR)\$(NAME).inc"
