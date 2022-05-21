@@ -73,4 +73,4 @@ rem lib /DEF:userenv.def  /OUT:..\Lib\USERENV.LIB
 rem lib /DEF:version.def  /OUT:..\Lib\VERSION.LIB
 rem lib /DEF:winspool.def /OUT:..\Lib\WINSPOOL.LIB
 
-rem erase *.lbc
+erase *.lbc

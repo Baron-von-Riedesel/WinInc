@@ -143,12 +143,13 @@ main proc c argc:dword, argv:ptr, envp:ptr
 local	dwSize:dword
 local	dwRead:dword
 local	pMem:dword
+local	szUScore[2]:byte
 local	szPath[256]:byte
 local	szDir[MAX_PATH]:byte
 local	szLine[128]:byte
 local	szName[96]:byte
 local	szModule[96]:byte
-local	szGuid[64]:byte
+local	szNum[12]:byte
 
 	mov ecx, argc
 	mov esi, [argv]
@@ -225,11 +226,18 @@ local	szGuid[64]:byte
 					invoke getline, esi, addr szLine, sizeof szLine
 					mov esi, eax
 					invoke getword, addr szLine, addr szName, sizeof szName
-					.if ( szName[0] )
+					mov edi, eax
+					invoke getword, edi, addr szNum, sizeof szNum   ; get an optional "ordinal" argument
+					.if szName[0] && szName[0] != ';'
+						xor eax, eax
 						.if bUScore
-							invoke printf, CStr("++_%s.%s",10), addr szName, addr szModule
+							mov al, '_'
+						.endif
+						mov word ptr szUScore, ax
+						.if szNum[0] == '@'
+							invoke printf, CStr('++%s%s.%s.%s%s.%s',10), addr szUScore, addr szName, addr szModule, addr szUScore, addr szName, addr szNum+1
 						.else
-							invoke printf, CStr("++%s.%s",10), addr szName, addr szModule
+							invoke printf, CStr('++%s%s.%s',10), addr szUScore, addr szName, addr szModule
 						.endif
 					.endif
 					.break .if (byte ptr [esi] == 0)
