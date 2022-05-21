@@ -37,11 +37,14 @@
 
    The standard Windows libraries are so-called import libraries. Import
    libraries contain just references to the dlls where the functions are
-   to be found. Some tools can create those libraries from simple text files.
-   WLib - included in Open Watcom - is able to do it, and MS LIB. MS LIB
-   understands so-called module-definition files ( file extension .DEF ),
-   while WLib expects its very own format. That's why WinInc uses MS LIB
-   to create the most common Windows libraries.
+   to be found. Several tools can create those libraries from simple text files.
+   What's used here are 2 programs:
+   
+    - def2jwt: the source is in Tools; It's supposed to be assembled with
+      jwasm, using Tools\def2jwt.bat.
+    - JWLib: the binary is part of the jwlink package.
+
+   After both programs are available, the import libraries may be generated:
 
    For Win32, run MAKELIBS.BAT in directory DEF.
    For Win64, run MAKELIBS.BAT in directory DEF64.

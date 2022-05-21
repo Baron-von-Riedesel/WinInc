@@ -1,6 +1,7 @@
  
- some simple test apps for WinInc:
+ some simple (test) apps for WinInc:
 
+ - def2jwl.asm:    to translate .DEF files into a format accepted by jwlib
  - macros.asm:     test macros defined in win32/crt includes
  - strucsiz.asm:   display size of some critical Win32/Win64 structures
  - strucsic.c:     display size of structures with standard win32/win64 C headers

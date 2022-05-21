@@ -3,7 +3,7 @@
 
   21.05.2022 V2.09
   - removed references to POLIB/POASM; to create the Windows libraries,
-    MS lib.exe is used now.
+    def2jwl and jwlib are used now.
 
   05/15/2013 V2.08
   - bugfix winnt.inc: CONTEXT structure for 64-bit was not correct.
