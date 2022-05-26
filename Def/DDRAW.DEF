@@ -1,4 +1,4 @@
-LIBRARY DDRAW
+LIBRARY DDRAW.dll
 EXPORTS
 "_DirectDrawCreate@12"
 "_DirectDrawCreateClipper@12"

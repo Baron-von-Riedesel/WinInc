@@ -1,4 +1,4 @@
-LIBRARY DSOUND
+LIBRARY DSOUND.dll
 EXPORTS
 "_DirectSoundCaptureCreate8@12"
 "_DirectSoundCaptureCreate@12"

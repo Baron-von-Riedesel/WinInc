@@ -1,4 +1,4 @@
-LIBRARY ADVAPI32
+LIBRARY ADVAPI32.dll
 EXPORTS
  _ChangeServiceConfig2A@12
  _ChangeServiceConfig2W@12

@@ -1,4 +1,4 @@
-LIBRARY DbgEng
+LIBRARY DBGENG.dll
 EXPORTS
 "DebugConnect"
 "DebugCreate"

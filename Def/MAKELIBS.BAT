@@ -35,28 +35,28 @@ def2jwl    winmm.def     >winmm.lbc
 def2jwl    wsock32.def   >wsock32.lbc
 def2jwl    ws2_32.def    >ws2_32.lbc
 
-jwlib -q -b -ii -ic ..\Lib\ADVAPI32.LIB @advapi32.lbc
-jwlib -q -b -ii -ic ..\Lib\COMCTL32.LIB @comctl32.lbc
-jwlib -q -b -ii -ic ..\Lib\COMDLG32.LIB @comdlg32.lbc
-jwlib -q -b -ii -ic ..\Lib\CRTDLL.LIB   @crtdll.lbc
-jwlib -q -b -ii -ic ..\Lib\DDRAW.LIB    @ddraw.lbc
-jwlib -q -b -ii -ic ..\Lib\DSOUND.LIB   @dsound.lbc
-jwlib -q -b -ii -ic ..\Lib\GDI32.LIB    @gdi32.lbc
-jwlib -q -b -ii -ic ..\Lib\GDIPLUS.LIB  @gdiplus.lbc
-jwlib -q -b -ii -ic ..\Lib\KERNEL32.LIB @kernel32.lbc
-jwlib -q -b -ii -ic ..\Lib\MSVCRT.LIB   @msvcrt.lbc
-jwlib -q -b -ii -ic ..\Lib\NTDLL.LIB    @ntdll.lbc
-jwlib -q -b -ii -ic ..\Lib\NTOSKRNL.LIB @ntoskrnl.lbc
-jwlib -q -b -ii -ic ..\Lib\NTVDM.LIB    @ntvdm.lbc
-jwlib -q -b -ii -ic ..\Lib\OLE32.LIB    @ole32.lbc
-jwlib -q -b -ii -ic ..\Lib\OLEAUT32.LIB @oleaut32.lbc
-jwlib -q -b -ii -ic ..\Lib\SHELL32.LIB  @shell32.lbc
-jwlib -q -b -ii -ic ..\Lib\SHLWAPI.LIB  @shlwapi.lbc
-jwlib -q -b -ii -ic ..\Lib\WININET.LIB  @wininet.lbc
-jwlib -q -b -ii -ic ..\Lib\USER32.LIB   @user32.lbc
-jwlib -q -b -ii -ic ..\Lib\WINMM.LIB    @winmm.lbc
-jwlib -q -b -ii -ic ..\Lib\WSOCK32.LIB  @wsock32.lbc
-jwlib -q -b -ii -ic ..\Lib\WS2_32.LIB   @ws2_32.lbc
+jwlib -q -b -n -ii -ic ..\Lib\ADVAPI32.LIB @advapi32.lbc
+jwlib -q -b -n -ii -ic ..\Lib\COMCTL32.LIB @comctl32.lbc
+jwlib -q -b -n -ii -ic ..\Lib\COMDLG32.LIB @comdlg32.lbc
+jwlib -q -b -n -ii -ic ..\Lib\CRTDLL.LIB   @crtdll.lbc
+jwlib -q -b -n -ii -ic ..\Lib\DDRAW.LIB    @ddraw.lbc
+jwlib -q -b -n -ii -ic ..\Lib\DSOUND.LIB   @dsound.lbc
+jwlib -q -b -n -ii -ic ..\Lib\GDI32.LIB    @gdi32.lbc
+jwlib -q -b -n -ii -ic ..\Lib\GDIPLUS.LIB  @gdiplus.lbc
+jwlib -q -b -n -ii -ic ..\Lib\KERNEL32.LIB @kernel32.lbc
+jwlib -q -b -n -ii -ic ..\Lib\MSVCRT.LIB   @msvcrt.lbc
+jwlib -q -b -n -ii -ic ..\Lib\NTDLL.LIB    @ntdll.lbc
+jwlib -q -b -n -ii -ic ..\Lib\NTOSKRNL.LIB @ntoskrnl.lbc
+jwlib -q -b -n -ii -ic ..\Lib\NTVDM.LIB    @ntvdm.lbc
+jwlib -q -b -n -ii -ic ..\Lib\OLE32.LIB    @ole32.lbc
+jwlib -q -b -n -ii -ic ..\Lib\OLEAUT32.LIB @oleaut32.lbc
+jwlib -q -b -n -ii -ic ..\Lib\SHELL32.LIB  @shell32.lbc
+jwlib -q -b -n -ii -ic ..\Lib\SHLWAPI.LIB  @shlwapi.lbc
+jwlib -q -b -n -ii -ic ..\Lib\WININET.LIB  @wininet.lbc
+jwlib -q -b -n -ii -ic ..\Lib\USER32.LIB   @user32.lbc
+jwlib -q -b -n -ii -ic ..\Lib\WINMM.LIB    @winmm.lbc
+jwlib -q -b -n -ii -ic ..\Lib\WSOCK32.LIB  @wsock32.lbc
+jwlib -q -b -n -ii -ic ..\Lib\WS2_32.LIB   @ws2_32.lbc
 
 rem activate those that are needed!
 rem lib /DEF:dbgeng.def   /OUT:..\Lib\DBGENG.LIB

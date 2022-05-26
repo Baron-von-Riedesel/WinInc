@@ -1,4 +1,4 @@
-LIBRARY WinInet
+LIBRARY WININET.dll
 EXPORTS
 "_CommitUrlCacheEntryA@44"
 "_CommitUrlCacheEntryW@44"

@@ -1,4 +1,4 @@
-LIBRARY WS2_32
+LIBRARY WS2_32.dll
 EXPORTS
 "WPUCompleteOverlappedRequest"
 "WSAAccept"

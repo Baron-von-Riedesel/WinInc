@@ -1,4 +1,4 @@
-LIBRARY KERNEL32
+LIBRARY KERNEL32.dll
 EXPORTS
  _CompareStringA@24
  _CompareStringW@24

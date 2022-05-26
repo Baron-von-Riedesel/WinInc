@@ -1,4 +1,4 @@
-LIBRARY KERNEL32
+LIBRARY KERNEL32.dll
 EXPORTS
  _CreateToolhelp32Snapshot@8
  _Heap32First@12

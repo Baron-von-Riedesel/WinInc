@@ -1,4 +1,4 @@
-LIBRARY OleAut32
+LIBRARY OLEAUT32.dll
 EXPORTS
 "_BSTR_UserFree@8"              @286
 "_BSTR_UserMarshal@12"          @284

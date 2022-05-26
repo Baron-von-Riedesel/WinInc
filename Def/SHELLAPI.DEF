@@ -1,4 +1,4 @@
-LIBRARY SHELL32
+LIBRARY SHELL32.dll
 EXPORTS
  "_CommandLineToArgvW@8"
  "_DoEnvironmentSubstA@8"

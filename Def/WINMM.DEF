@@ -1,4 +1,4 @@
-LIBRARY WinMM
+LIBRARY WINMM.dll
 EXPORTS
 "_CloseDriver@12"
 "_DefDriverProc@20"

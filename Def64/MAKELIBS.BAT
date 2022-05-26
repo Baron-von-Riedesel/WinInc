@@ -17,18 +17,18 @@ def2jwl user32.def      >user32.lbc
 def2jwl ws2_32.def      >ws2_32.lbc
 def2jwl wsock32.def     >wsock32.lbc
 
-jwlib -q -ic -i6 ..\Lib64\ADVAPI32.LIB   @advapi32.lbc
-jwlib -q -ic -i6 ..\Lib64\COMCTL32.LIB   @comctl32.lbc
-jwlib -q -ic -i6 ..\Lib64\COMDLG32.LIB   @comdlg32.lbc
-jwlib -q -ic -i6 ..\Lib64\DBGENG.LIB     @dbgeng.lbc
-jwlib -q -ic -i6 ..\Lib64\GDI32.LIB      @gdi32.lbc
-jwlib -q -ic -i6 ..\Lib64\KERNEL32.LIB   @kernel32.lbc
-jwlib -q -ic -i6 ..\Lib64\MSVCRT.LIB     @msvcrt.lbc
-jwlib -q -ic -i6 ..\Lib64\OLE32.LIB      @ole32.lbc
-jwlib -q -ic -i6 ..\Lib64\OLEAUT32.LIB   @oleaut32.lbc
-jwlib -q -ic -i6 ..\Lib64\SHELL32.LIB    @shell32.lbc
-jwlib -q -ic -i6 ..\Lib64\SHLWAPI.LIB    @shlwapi.lbc
-jwlib -q -ic -i6 ..\Lib64\USER32.LIB     @user32.lbc
-jwlib -q -ic -i6 ..\Lib64\WS2_32.LIB     @ws2_32.lbc
-jwlib -q -ic -i6 ..\Lib64\WSOCK32.LIB    @wsock32.lbc
+jwlib -q -b -n -ic -i6 ..\Lib64\ADVAPI32.LIB   @advapi32.lbc
+jwlib -q -b -n -ic -i6 ..\Lib64\COMCTL32.LIB   @comctl32.lbc
+jwlib -q -b -n -ic -i6 ..\Lib64\COMDLG32.LIB   @comdlg32.lbc
+jwlib -q -b -n -ic -i6 ..\Lib64\DBGENG.LIB     @dbgeng.lbc
+jwlib -q -b -n -ic -i6 ..\Lib64\GDI32.LIB      @gdi32.lbc
+jwlib -q -b -n -ic -i6 ..\Lib64\KERNEL32.LIB   @kernel32.lbc
+jwlib -q -b -n -ic -i6 ..\Lib64\MSVCRT.LIB     @msvcrt.lbc
+jwlib -q -b -n -ic -i6 ..\Lib64\OLE32.LIB      @ole32.lbc
+jwlib -q -b -n -ic -i6 ..\Lib64\OLEAUT32.LIB   @oleaut32.lbc
+jwlib -q -b -n -ic -i6 ..\Lib64\SHELL32.LIB    @shell32.lbc
+jwlib -q -b -n -ic -i6 ..\Lib64\SHLWAPI.LIB    @shlwapi.lbc
+jwlib -q -b -n -ic -i6 ..\Lib64\USER32.LIB     @user32.lbc
+jwlib -q -b -n -ic -i6 ..\Lib64\WS2_32.LIB     @ws2_32.lbc
+jwlib -q -b -n -ic -i6 ..\Lib64\WSOCK32.LIB    @wsock32.lbc
 erase *.lbc

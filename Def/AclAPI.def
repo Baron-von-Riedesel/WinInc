@@ -1,4 +1,4 @@
-LIBRARY ADVAPI32
+LIBRARY ADVAPI32.dll
 EXPORTS
  _BuildExplicitAccessWithNameA@20
  _BuildExplicitAccessWithNameW@20

@@ -1,4 +1,4 @@
-LIBRARY ComCtl32
+LIBRARY COMCTL32.dll
 EXPORTS
 "CreateMappedBitmap"
 "CreatePropertySheetPage"

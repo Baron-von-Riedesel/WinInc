@@ -1,4 +1,4 @@
-LIBRARY Shell32
+LIBRARY SHELL32.dll
 EXPORTS
 "BHID_LinkTargetItem"
 "BHID_SFObject"

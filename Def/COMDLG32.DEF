@@ -1,4 +1,4 @@
-LIBRARY COMDLG32
+LIBRARY COMDLG32.dll
 EXPORTS
  _ChooseColorA@4
  _ChooseColorW@4

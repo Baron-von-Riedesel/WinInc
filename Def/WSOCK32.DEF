@@ -1,4 +1,4 @@
-LIBRARY WSock32
+LIBRARY WSOCK32.dll
 EXPORTS
 "_accept@12"              @1
 "_bind@12"                @2

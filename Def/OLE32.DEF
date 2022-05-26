@@ -1,4 +1,4 @@
-LIBRARY Ole32
+LIBRARY OLE32.dll
 EXPORTS
 "_BindMoniker@16"
 "_CLIPFORMAT_UserFree@8"

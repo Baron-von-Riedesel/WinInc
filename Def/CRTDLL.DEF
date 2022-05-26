@@ -1,4 +1,4 @@
-LIBRARY CRTDLL
+LIBRARY CRTDLL.dll
 EXPORTS
 "_XcptFilter"
 "__CxxFrameHandler"

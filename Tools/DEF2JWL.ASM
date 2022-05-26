@@ -76,6 +76,8 @@ bUScore db 0
 
 	.CODE
 
+; get next line from the .DEF file
+
 getline proc uses esi edi pSrc:ptr, pDst:ptr, dwMax:dword
 	mov esi, pSrc
 	mov edi, pDst
@@ -102,6 +104,8 @@ getline proc uses esi edi pSrc:ptr, pDst:ptr, dwMax:dword
 	mov eax, esi
 	ret
 getline endp
+
+; get next word from the current line
 
 getword proc uses esi edi ebx pszLine, pszWord, dwMax:dword
 
@@ -199,6 +203,11 @@ local	szNum[12]:byte
 	mov esi, pMem
 	mov eax, dwSize
 	mov byte ptr [esi+eax],0
+
+;--- read the lines of the .DEF file;
+;--- the only interesting items are LIBRARY and EXPORTS;
+;--- once EXPORTS has been detected, assume anything that follows to be
+;--- an export definition.
 
 	.while (1)
 		.break .if (byte ptr [esi] == 0)

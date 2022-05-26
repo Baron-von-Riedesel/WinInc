@@ -1,4 +1,4 @@
-LIBRARY KERNEL32
+LIBRARY KERNEL32.dll
 EXPORTS
  _ActivateActCtx@8
  _AddAtomA@4

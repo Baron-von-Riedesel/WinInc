@@ -1,4 +1,4 @@
-LIBRARY Ole32
+LIBRARY OLE32.dll
 EXPORTS
 "BindMoniker"
 "CLIPFORMAT_UserFree"

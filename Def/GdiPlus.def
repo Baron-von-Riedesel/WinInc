@@ -1,4 +1,4 @@
-LIBRARY GdiPlus
+LIBRARY GdiPlus.dll
 EXPORTS
 "CodecIImageBytes"
 "EncoderChrominanceTable"

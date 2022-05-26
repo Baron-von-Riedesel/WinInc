@@ -1,4 +1,4 @@
-LIBRARY ntdll
+LIBRARY ntdll.dll
 EXPORTS
 "__isascii"
 "__iscsym"

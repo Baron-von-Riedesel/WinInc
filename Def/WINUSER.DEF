@@ -1,4 +1,4 @@
-LIBRARY USER32
+LIBRARY USER32.dll
 EXPORTS
  _ActivateKeyboardLayout@8
  _AdjustWindowRect@12

@@ -1,4 +1,4 @@
-LIBRARY Gdi32
+LIBRARY GDI32.dll
 EXPORTS
 "AbortDoc"
 "AbortPath"

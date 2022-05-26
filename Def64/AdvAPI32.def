@@ -1,4 +1,4 @@
-LIBRARY AdvAPI32
+LIBRARY ADVAPI32.dll
 EXPORTS
 "AbortSystemShutdownA"
 "AbortSystemShutdownW"

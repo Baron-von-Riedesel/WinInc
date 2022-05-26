@@ -1,4 +1,4 @@
-LIBRARY WSock32
+LIBRARY WSOCK32.dll
 EXPORTS
 "AcceptEx"
 "EnumProtocolsA"

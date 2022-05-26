@@ -1,5 +1,4 @@
-
-LIBRARY WS2_32
+LIBRARY WS2_32.dll
 EXPORTS
  "_accept@12"         @1
  "_bind@12"           @2

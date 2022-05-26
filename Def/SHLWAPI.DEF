@@ -1,4 +1,4 @@
-LIBRARY ShLwApi
+LIBRARY SHLWAPI.dll
 EXPORTS
 "_AssocCreate@24"
 "_AssocQueryKeyA@20"
